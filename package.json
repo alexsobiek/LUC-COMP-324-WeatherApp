@@ -1,0 +1,19 @@
+{
+  "name": "luc-comp-324-weatherapp",
+  "version": "1.0.0",
+  "description": "Final project for COMP 324",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexsobiek/LUC-COMP-324-WeatherApp.git"
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/alexsobiek/LUC-COMP-324-WeatherApp/issues"
+  },
+  "homepage": "https://github.com/alexsobiek/LUC-COMP-324-WeatherApp#readme"
+}
