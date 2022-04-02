@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const path = require("path");
 const TemplateEngine = require("./TemplateEngine");
 
@@ -6,6 +7,9 @@ const app = express();
 
 const PORT = 3000;
 const HOSTNAME = "localhost";
+
+// Setup Morgan for Express logging
+app.use(morgan("tiny"));
 
 // Set static routes
 app.use("/css", express.static(path.join(__dirname, "views", "css")));
