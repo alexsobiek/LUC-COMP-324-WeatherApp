@@ -1,19 +1,11 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
+const TemplateEngine = require("./TemplateEngine");
 
 const app = express();
 
 const PORT = 3000;
 const HOSTNAME = "localhost";
-
-// Register the "html" view engine
-app.engine('html', (path, options, callback) => { // define the template engine
-    fs.readFile(path, (err, content) => {
-        if (err) return callback(err)
-        else return callback(null, content.toString());
-    });
-});
 
 // Set static routes
 app.use("/css", express.static(path.join(__dirname, "views", "css")));
@@ -21,18 +13,25 @@ app.use("/js", express.static(path.join(__dirname, "views", "js")));
 
 // Set view-related options
 app.set("views", path.join(__dirname, "views"));
-app.set("view options", {layout: false});
-app.set("view engine", "html");
+
+// Setup the Template Engine
+let engine = new TemplateEngine(app);
+engine.addCss("main.css");  // This CSS will apply to ALL pages
+engine.addJs("main.js");    // This JS will be included on ALL pages
 
 // Homepage
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("home", {
+        title: "Home",
+    });
 });
 
 // Match all other page routes (404)
 app.get("*", (req, res) => {
-    res.render("404");
-})
+    res.render("404", {
+        title: "Not Found"
+    });
+});
 
 // Listen
 app.listen(PORT, HOSTNAME, () => {
