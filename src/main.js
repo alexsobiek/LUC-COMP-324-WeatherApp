@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
+const api = require("./api");
 const TemplateEngine = require("./TemplateEngine");
 
 const app = express();
@@ -17,6 +18,9 @@ app.use("/js", express.static(path.join(__dirname, "views", "js")));
 
 // Set view-related options
 app.set("views", path.join(__dirname, "views"));
+
+// Setup API
+app.use("/api", api);
 
 // Setup the Template Engine
 let engine = new TemplateEngine(app);
