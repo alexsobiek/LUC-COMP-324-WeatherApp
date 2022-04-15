@@ -18,4 +18,24 @@ function displayWeather(weather) {
     console.log("City: " + city + "\n" + "Temp: " + temp);
 }
 
-getWeather(60622);
+function getForecast(zipCode){
+    let url =`/api/forecast/${zipCode}`
+    fetch(url)
+    .then((resp) => {
+        return resp.json().then(res => {                            // get json data
+            if (res.status === 200) return res.data;                // 200 = Good response
+            else throw new Error("Failed to retrieve weather data");// Failed response
+        }).catch(console.error);
+    })
+    .then((data) => { displayForecast(data)})                        // send data to method for display
+    .catch(console.error)
+}
+
+function displayForecast(weather) {
+    let temp = Math.round(weather.list[0].main.temp) + "°F";
+    console.log("Temp: " + temp);
+    //document.getElementById('day1').innerHTML = temp;
+}
+
+//getWeather(60622);
+getForecast(60622);
