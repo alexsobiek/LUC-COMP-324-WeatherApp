@@ -39,7 +39,7 @@ function displayForecast(weather) {
         dayTemps[i] = weather.list[i].main.temp;
     }
 
-    
+
 
     temp = Math.max(...dayTemps);
     console.log(dayTemps);
