@@ -1,8 +1,7 @@
 {{include header.html}}
 
     <!-- Temporary -->
-    <h1>Weather App</h1>
-
+    <h1>Homepage</h1>
     <div class="searchbar_wrapper">
       <input type="text" class="input" id="searchInput" placeholder="Zip Code...">
         <button type="search_button" onclick="">
@@ -11,31 +10,61 @@
           </svg>
         </button>
     </div>
-        <div class="main_block_wrapper">
-          <div class="box1_pos">
-          <div class="box1">
-            <h1 class="box1_city_display">Chicago, IL</h1>
-            <div class=box1_icon>placholder4image</div> <!-- this is where the image goes for box one this is temporary rn because images aren't working -->
-            <h2 class="box1_temp_display">72​° F</h2>
-          </div>
-          </div>
-          <div class="box2">
-            <ul class="box2_week_list">
-              <li class="box2_day">Mon</li>
-              <li class="box2_day">Tues</li>
-              <li class="box2_day">Wed</li>
-              <li class="box2_day">Thurs</li>
-              <li class="box2_day">Fri</li>
-              <li class="box2_day">Sat</li>
-              <li class="box2_day">Sun</li>
-            </ul>
-          </div>
-          <div class="box3">
-            <ul class="box3_info_list">
-              <li class="box3_infobox">Wind</li>
-              <li class="box3_infobox">Humidity</li>
-              <li class="box3_infobox">Pressure</li>
-              <li class="box3_infobox">Sunset</li>
-          </div>
+    <div id="container">
+        <div id="box1">
+            <div class="col1">
+                <div id="city"></div>
+                <div id="temp"></div>
+            </div>
+            <div class="col2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-cloud-drizzle" viewBox="0 0 16 16">
+                    <path d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm6 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm-3.5 1.5a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm6 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm.747-8.498a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973zM8.5 2a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4.002 4.002 0 0 1 8.5 2z"/>
+                  </svg>
+            </div>
         </div>
+    <div id="inner_container">
+        <div id="box2">
+                <h3>5 Day Forecast</h3>
+                <div id="forecastWrapper">
+                    <div class="day">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cloud-drizzle" viewBox="0 0 16 16">
+                            <path d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm6 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm-3.5 1.5a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm6 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm.747-8.498a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973zM8.5 2a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4.002 4.002 0 0 1 8.5 2z"/>
+                          </svg>
+                        <p>37</p>
+                        <p>Day 1</p>
+                    </div>
+                    <div class="box2_daybox">
+                        <p>Day 2</p>
+                    </div>
+                    <div class="box2_daybox">
+                        <p>Day 3</p>
+                    </div>
+                    <div class="box2_daybox">
+                        <p>Day 4</p>
+                    </div>
+                    <div class="box2_daybox">
+                        <p>Day 5</p>
+                    </div>
+                </div>
+        </div>
+        <div id="box3">
+                <h3>Daily Weather Details</h3>
+                <div id="forecastWrapper">
+                    <div class="box3_infobox">
+                        <p>Wind</p>
+                    </div>
+                    <div class="box3_infobox">
+                        <p>Humidity</p>
+                    </div>
+                    <div class="box3_infobox">
+                        <p>Pressure</p>
+                    </div>
+                    <div class="box3_infobox">
+                        <p>Sunset</p>
+                    </div>
+                </div>
+        </div>
+      </div>
+    </div>
+
 {{include footer.html}}
