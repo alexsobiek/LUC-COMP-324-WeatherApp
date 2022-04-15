@@ -19,7 +19,7 @@ function displayWeather(weather) {
 }
 
 function getForecast(zipCode){
-    let url =`/api/forecast/${zipCode}`
+    let url =`/api/forecast/${zipCode}&units=imperial`;
     fetch(url)
     .then((resp) => {
         return resp.json().then(res => {                            // get json data
@@ -28,14 +28,26 @@ function getForecast(zipCode){
         }).catch(console.error);
     })
     .then((data) => { displayForecast(data)})                        // send data to method for display
+    //.then((data) => { console.log(data)})
     .catch(console.error)
 }
 
 function displayForecast(weather) {
-    let temp = Math.round(weather.list[0].main.temp) + "°F";
-    console.log("Temp: " + temp);
+    const dayTemps = [];
+    const highTemps = [];
+    for(let i = 0; i < 39; i++){
+        dayTemps[i] = weather.list[i].main.temp;
+    }
+
+    
+
+    temp = Math.max(...dayTemps);
+    console.log(dayTemps);
+    console.log(temp);
+    //let temp = Math.round(weather.list[0].main.temp) + "°F";
+    //console.log("Temp: " + temp);
     //document.getElementById('day1').innerHTML = temp;
 }
 
-//getWeather(60622);
+getWeather(60622);
 getForecast(60622);
