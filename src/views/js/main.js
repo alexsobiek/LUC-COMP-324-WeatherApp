@@ -14,7 +14,7 @@ function getWeather(zipCode){
 
 function displayWeather(weather) {
     let city = weather.name;
-    let temp = weather.main.temp + "°F";
+    let temp = Math.round(weather.main.temp) + "°F";
     console.log("City: " + city + "\n" + "Temp: " + temp);
     document.getElementById('city').innerHTML = city;
     document.getElementById('temp').innerHTML = temp;
@@ -41,14 +41,21 @@ function displayForecast(weather) {
         dayTemps[i] = weather.list[i].main.temp;
     }
 
-
-
     temp = Math.max(...dayTemps);
     console.log(dayTemps);
     console.log(temp);
+
+
     //let temp = Math.round(weather.list[0].main.temp) + "°F";
     //console.log("Temp: " + temp);
     //document.getElementById('day1').innerHTML = temp;
+}
+
+
+function displaySearch(){
+    let search = document.getElementById('searchInput').value;
+    console.log(search);
+    getWeather(search);
 }
 
 getWeather(60622);
