@@ -16,6 +16,8 @@ function displayWeather(weather) {
     let city = weather.name;
     let temp = weather.main.temp + "°F";
     console.log("City: " + city + "\n" + "Temp: " + temp);
+    document.getElementById('city').innerHTML = city;
+    document.getElementById('temp').innerHTML = temp;
 }
 
 function getForecast(zipCode){
