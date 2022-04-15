@@ -27,6 +27,20 @@ router.get("/weather/:q", apiMiddleware, (req, res) => {
     });
 });
 
+router.get("/forecast/:q", apiMiddleware, (req, res) => {
+    req.query.q = req.params.q; // Take the q parameter from the URL and set it as a query parameter
+    request('forecast', req.query, (err, response) => {  // Make call to OpenWeatherMap
+        if (err) {
+            console.error(err);
+            res.status(500); // Internal Server Error status code
+            res.json({ status: 500 });
+        } else {
+            res.status(response.status);
+            res.json(response);
+        }
+    });
+});
+
 
 router.get("*", apiMiddleware, (req, res) => {
     res.status(404); // Page not found status code
@@ -43,8 +57,6 @@ function request(path, params, callback) {
     // Setup URL parameters
     path += `?appid=${API_KEY}`;
     for (const key in params) path += `&${key}=${params[key]}`;
-
-    console.log(path)
 
     const options = {
         host: 'api.openweathermap.org', port: 443, method: 'GET', path: `/data/2.5/${path}`,
