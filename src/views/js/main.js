@@ -55,17 +55,8 @@ function displayWeather(weather) {
     cloudyIcon = document.getElementById('cloudyIcon');
     snowyIcon = document.getElementById('snowyIcon');
 
-    // check the weather type and then display the correct icon by changing css display from 'none' to 'inline-block'
-    if(weatherType == 'Clouds')
-        cloudyIcon.style.display = "inline-block";
-    else if(weatherType == 'Rain' || weatherType == 'Drizzle' || weatherType == 'Thunderstorm')
-        rainyIcon.style.display = "inline-block";
-    else if(weatherType == 'Snow')
-        snowyIcon.style.display = "inline-block"
-    else if(weatherType == 'Clear')
-        sunnyIcon.style.display = "inline-block";
-    else
-        sunnyIcon.style.display = "inline-block";
+    // display the icon based on weather type (ex. Clear, Rain, Cloudy)
+    displayIcon(weatherType);
 }
 
 // get the temp for the next five days
@@ -104,3 +95,17 @@ function displaySearch(){
 // call so when the page first loads it shows Chicago weather
 getWeather(60622);
 getForecast(60622);
+
+// method to display the correct icon based on weather type
+function displayIcon(weatherType){
+    if(weatherType == 'Clouds')
+        cloudyIcon.style.display = "inline-block";
+    else if(weatherType == 'Rain' || weatherType == 'Drizzle' || weatherType == 'Thunderstorm')
+        rainyIcon.style.display = "inline-block";
+    else if(weatherType == 'Snow')
+        snowyIcon.style.display = "inline-block"
+    else if(weatherType == 'Clear')
+        sunnyIcon.style.display = "inline-block";
+    else
+        sunnyIcon.style.display = "inline-block";
+}
