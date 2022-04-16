@@ -57,6 +57,13 @@ function displayWeather(weather) {
 
     // display the icon based on weather type (ex. Clear, Rain, Cloudy)
     displayIcon(weatherType);
+
+    // change color of temp reading 
+    // (blue if less than 50 degrees, red if more than)
+    if(Math.round(weather.main.temp) < 50)
+        document.getElementById('temp').style.color = "blue";
+    else
+        document.getElementById('temp').style.color = "red";
 }
 
 // get the temp for the next five days
