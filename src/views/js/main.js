@@ -37,17 +37,35 @@ function displayWeather(weather) {
     let sunset = new Date(weather.sys.sunset);
     let pressure = weather.main.pressure;
     let humidity = weather.main.humidity;
+    let weatherType = weather.weather[0].main;
     // ====== returns wrong time ========
     let time = sunset.getUTCHours() + ":" + sunset.getUTCMinutes();
 
-    console.log("City: " + city + "\n" + "Temp: " + temp);
-    console.log("Wind: " + wind + "\n" + "Sunset: " + time);
+    // display data on page
     document.getElementById('city').innerHTML = city;
     document.getElementById('temp').innerHTML = temp;
     document.getElementById('wind').innerHTML = wind + "mph";
     document.getElementById('humidity').innerHTML = humidity + "%";
     document.getElementById('pressure').innerHTML = pressure;
     document.getElementById('sunset').innerHTML = time // returns wrong time, need to fix
+
+    // save icon svg's to variables
+    rainyIcon = document.getElementById('rainyIcon');
+    sunnyIcon = document.getElementById('sunnyIcon');
+    cloudyIcon = document.getElementById('cloudyIcon');
+    snowyIcon = document.getElementById('snowyIcon');
+
+    // check the weather type and then display the correct icon by changing css display from 'none' to 'inline-block'
+    if(weatherType == 'Clouds')
+        cloudyIcon.style.display = "inline-block";
+    else if(weatherType == 'Rain' || weatherType == 'Drizzle' || weatherType == 'Thunderstorm')
+        rainyIcon.style.display = "inline-block";
+    else if(weatherType == 'Snow')
+        snowyIcon.style.display = "inline-block"
+    else if(weatherType == 'Clear')
+        sunnyIcon.style.display = "inline-block";
+    else
+        sunnyIcon.style.display = "inline-block";
 }
 
 // get the temp for the next five days

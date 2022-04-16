@@ -142,3 +142,7 @@ body{
     font-size: 2rem;
     margin-top: 25%;
 }
+
+#rainyIcon, #sunnyIcon, #cloudyIcon, #snowyIcon{
+  display: none;
+}
