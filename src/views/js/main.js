@@ -105,6 +105,10 @@ getForecast(60622);
 
 // method to display the correct icon based on weather type
 function displayIcon(weatherType){
+    sunnyIcon.style.display = "none";
+    snowyIcon.style.display = "none"
+    rainyIcon.style.display = "none";
+    cloudyIcon.style.display = "none";
     if(weatherType == 'Clouds')
         cloudyIcon.style.display = "inline-block";
     else if(weatherType == 'Rain' || weatherType == 'Drizzle' || weatherType == 'Thunderstorm')
@@ -112,7 +116,5 @@ function displayIcon(weatherType){
     else if(weatherType == 'Snow')
         snowyIcon.style.display = "inline-block"
     else if(weatherType == 'Clear')
-        sunnyIcon.style.display = "inline-block";
-    else
         sunnyIcon.style.display = "inline-block";
 }
