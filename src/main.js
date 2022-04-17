@@ -7,7 +7,7 @@ const TemplateEngine = require("./TemplateEngine");
 const app = express();
 
 const PORT = 3000;
-const HOSTNAME = "localhost";
+const HOSTNAME = "0.0.0.0";
 
 // Setup Morgan for Express logging
 app.use(morgan("tiny"));
@@ -25,13 +25,29 @@ app.use("/api", api);
 
 // Setup the Template Engine
 let engine = new TemplateEngine(app);
+
+// CSS
 engine.addCss("main.css");  // This CSS will apply to ALL pages
-engine.addJs("main.js");    // This JS will be included on ALL pages
+engine.addCss("layout.css");
+engine.addCss("typography.css");
+engine.addCss("nav.css");
+engine.addCss("../icons/bootstrap-icons.css");
+
+// JS
+engine.addJs("page.js");    // This JS will be included on ALL pages
+engine.addJs("weather.js");
 
 // Homepage
 app.get("/", (req, res) => {
     res.render("home", {
+        title: "Home"
+    });
+});
+
+app.get("/:query", (req, res) => {
+    res.render("home", {
         title: "Home",
+        query: req.params.query
     });
 });
 

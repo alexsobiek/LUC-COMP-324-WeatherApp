@@ -1,0 +1,42 @@
+body {
+    font-family: sans-serif;
+}
+
+/* Text Color */
+.text-light {
+    color: var(--light);
+}
+
+.text-dark {
+    color: var(--dark);
+}
+
+.text-primary {
+    color: var(--primary);
+}
+
+.text-secondary {
+    color: var(--secondary);
+}
+
+.text-red {
+    color: var(--red);
+}
+
+/* Text Sizing */
+
+.text-sm {
+    font-size: 0.5rem;
+}
+
+.text-md {
+    font-size: 1rem;
+}
+
+.text-lg {
+    font-size: 1.5rem;
+}
+
+.text-xlg {
+    font-size: 2rem;
+}
