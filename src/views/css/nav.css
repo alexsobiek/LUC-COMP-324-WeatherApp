@@ -73,7 +73,7 @@
 
 .navbar-top .search-bar .search-error {
     --nav-form-border: 1px solid var(--red);
-    animation: searchError 0.3s;
+    animation: searchError 0.2s;
 }
 
 
