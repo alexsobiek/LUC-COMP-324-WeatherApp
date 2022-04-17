@@ -65,8 +65,23 @@
     line-height: calc(var(--nav-line-height) - 2px);
 }
 
-.navbar-top .search-barjm::after {
+.navbar-top .search-bar::after {
     content: "";
     clear: both;
     display: table;
+}
+
+.navbar-top .search-bar .search-error {
+    --nav-form-border: 1px solid var(--red);
+    animation: searchError 0.3s;
+}
+
+
+@keyframes searchError {
+    0% { transform: translate(10px, 0) }
+    20% { transform: translate(-10px, 0) }
+    40% { transform: translate(20px, 0) }
+    60% { transform: translate(-20px, 0) }
+    80% { transform: translate(20px, 0) }
+    100% { transform: translate(10px, 0) }
 }

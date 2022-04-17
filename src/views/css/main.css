@@ -72,6 +72,9 @@ input:focus, textarea:focus, select:focus {
     outline: 1px solid var(--primary);
 }
 
+
+/* Misc */
+
 #container {
     display: flex;
     flex-direction: row;

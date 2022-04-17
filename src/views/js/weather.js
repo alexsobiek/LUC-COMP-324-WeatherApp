@@ -19,6 +19,10 @@ navSearch.addEventListener("submit", event => {
     getWeather(val).then(() => {
         navSearchInput.value = ""; // Clear search bar
     }).catch(error => {
+        navSearch.classList.add("search-error");
+        setTimeout(() => {
+            navSearch.classList.remove("search-error");
+        }, 300)
         console.error(error);
     });
 });
