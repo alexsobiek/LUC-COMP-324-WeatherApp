@@ -1,32 +1,46 @@
-// get current weather
-function getWeather(zipCode){
-    let url = `/api/weather/${zipCode}&units=imperial`;
+// Selectors
+const navSearch = document.getElementById("navSearch");
+const navSearchInput = document.getElementById("navSearchInput");
 
-    fetch(url)
-    .then((resp) => {
-        return resp.json().then(res => {                            // get json data
-            if (res.status === 200) return res.data;                // 200 = Good response
-            else throw new Error("Failed to retrieve weather data");// Failed response
-        }).catch(console.error);
-    })
-    .then((data) => { displayWeather(data)})                        // send data to method for display
-    //.then((data) => {console.log(data)})
-    .catch(console.error)                                           // Handle error
-}
+// Variables
+let units = "imperial";
 
-// get 5 day forecast
-function getForecast(zipCode){
-    let url =`/api/forecast/${zipCode}&units=imperial`;
-    fetch(url)
-    .then((resp) => {
-        return resp.json().then(res => {                            // get json data
-            if (res.status === 200) return res.data;                // 200 = Good response
-            else throw new Error("Failed to retrieve weather data");// Failed response
-        }).catch(console.error);
+// call so when the page first loads it shows Chicago weather
+getWeather((query !== "undefined") ? query : 60622).catch(console.error);
+
+// Handle nav search form
+navSearch.addEventListener("submit", event => {
+    event.preventDefault(); // Stop from refreshing page
+
+    // Sanitize form data
+    let val = navSearchInput.value;
+    val = val.replace(/\s+/, ",");
+
+    getWeather(val).then(() => {
+        navSearchInput.value = ""; // Clear search bar
+    }).catch(error => {
+        console.error(error);
+    });
+});
+
+function getWeather(query) {
+    console.log(`Getting weather data for ${query}`);
+    return Promise.all([
+        fetch(`/api/weather/${query}&units=${units}`),
+        fetch(`/api/forecast/${query}&units=${units}`)
+    ]).then(resps => {
+        return Promise.all([
+            resps[0].json(),
+            resps[1].json(),
+        ]).then(json => {
+            if (json[0].status === 200 && json[1].status === 200) {
+                displayWeather(json[0].data);
+                displayForecast(json[1].data);
+                let city = json[0].data.name;
+                window.history.pushState(city, "", query);
+            } else throw new Error("Failed to retrieve weather data");
+        });
     })
-    .then((data) => { displayForecast(data)})                        // send data to method for display
-    //.then((data) => { console.log(data)})
-    .catch(console.error)
 }
 
 // shows current weather for selected zip code
@@ -58,12 +72,12 @@ function displayWeather(weather) {
     // display the icon based on weather type (ex. Clear, Rain, Cloudy)
     displayIcon(weatherType);
 
-    // change color of temp reading 
+    // change color of temp reading
     // (blue if less than 50 degrees, red if more than)
     if(Math.round(weather.main.temp) < 50)
-        document.getElementById('temp').style.color = "blue";
+        document.getElementById('temp').classList.add("text-primary");
     else
-        document.getElementById('temp').style.color = "red";
+        document.getElementById('temp').classList.add("text-red");
 }
 
 // get the temp for the next five days
@@ -90,18 +104,6 @@ function displayForecast(weather) {
     document.getElementById('day4temp').innerHTML = day4temp + "°F";
     document.getElementById('day5temp').innerHTML = day5temp + "°F";
 }
-
-// get zipcode from search bar and display weather results
-function displaySearch(){
-    let zipCode = document.getElementById('searchInput').value;
-    console.log(zipCode);
-    getWeather(zipCode);
-    getForecast(zipCode);
-}
-
-// call so when the page first loads it shows Chicago weather
-getWeather(60622);
-getForecast(60622);
 
 // method to display the correct icon based on weather type
 function displayIcon(weatherType){
