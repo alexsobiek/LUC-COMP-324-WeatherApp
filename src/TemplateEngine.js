@@ -73,7 +73,7 @@ module.exports = class TemplateEngine {
                     break;
                 }
             }
-            if (val !== "") content = content.replace(match[0], val);
+            content = content.replace(match[0], val);
         });
         return content;
     }
