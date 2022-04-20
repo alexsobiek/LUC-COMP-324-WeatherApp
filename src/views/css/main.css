@@ -79,36 +79,6 @@ input:focus, textarea:focus, select:focus {
     width: 25%;
 }
 
-#box1, #box2, #box3 {
-    border: 2px solid #f2f2f2;
-    background-color: var(--background-alt);
-    border-radius: 15px;
-    box-shadow: 2px 2px 8px 0 rgba(128, 128, 128, 0.4);
-    padding: 10px;
-}
-
-#box1 {
-    /*border: 1px solid; */
-    min-height: 200px;
-    width: 98.5%;
-}
-
-#box2 {
-    width: 98.5%;
-}
-
-#box3 {
-    width: 98.5%;
-    margin-top: 1rem;
-}
-
-
-.col1, .col2 {
-    display: flex;
-    width: 50%;
-    margin: 25px 25px;
-}
-
 .forecastWrapper {
     display: flex;
     flex-direction: row;
