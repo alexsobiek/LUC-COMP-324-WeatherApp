@@ -98,7 +98,8 @@ input:focus, textarea:focus, select:focus {
 }
 
 #box3 {
-  width: 98.5%;
+    width: 98.5%;
+    margin-top: 1rem;
 }
 
 
