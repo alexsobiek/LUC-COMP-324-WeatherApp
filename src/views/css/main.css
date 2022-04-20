@@ -163,3 +163,11 @@ input:focus, textarea:focus, select:focus {
 #rainyIcon, #sunnyIcon, #cloudyIcon, #snowyIcon {
     display: none;
 }
+
+#box1 .col2 i{
+    font-size: 150px;
+}
+
+#box2 i{
+    font-size: 30px;
+}
