@@ -59,26 +59,28 @@ function displayWeather(weather) {
     // ====== returns wrong time ========
     let time = sunset.getUTCHours() + ":" + sunset.getUTCMinutes();
 
+    let weatherIcon;
+
+    if (weatherType === 'Clouds')
+        weatherIcon = "cloud-sun-fill";
+    else if (weatherType === 'Rain' || weatherType === 'Drizzle' || weatherType === 'Thunderstorm')
+        weatherIcon = "cloud-rain-fill";
+    else if (weatherType === 'Snow')
+        weatherIcon = "cloud-snow-fill"
+    else if (weatherType === 'Clear')
+        weatherIcon = "brightness-high-fill"
+
     // display data on page
-    document.getElementById('city').innerHTML = city;
+    document.getElementById('city').innerHTML = `<i class="bi bi-${weatherIcon}"></i> ${city}`;
     document.getElementById('temp').innerHTML = temp;
     document.getElementById('wind').innerHTML = wind + "mph";
     document.getElementById('humidity').innerHTML = humidity + "%";
     document.getElementById('pressure').innerHTML = pressure;
     document.getElementById('sunset').innerHTML = time // returns wrong time, need to fix
 
-    // save icon svg's to variables
-    rainyIcon = document.getElementById('rainyIcon');
-    sunnyIcon = document.getElementById('sunnyIcon');
-    cloudyIcon = document.getElementById('cloudyIcon');
-    snowyIcon = document.getElementById('snowyIcon');
-
-    // display the icon based on weather type (ex. Clear, Rain, Cloudy)
-    displayIcon(weatherType);
-
     // change color of temp reading
     // (blue if less than 50 degrees, red if more than)
-    if(Math.round(weather.main.temp) < 50)
+    if (Math.round(weather.main.temp) < 50)
         document.getElementById('temp').classList.add("text-primary");
     else
         document.getElementById('temp').classList.add("text-red");
@@ -89,7 +91,7 @@ function displayForecast(weather) {
     const dayTemps = [];
 
     // store the temp for every 3 hours
-    for(let i = 0; i < 40; i++){
+    for (let i = 0; i < 40; i++) {
         dayTemps[i] = Math.round(weather.list[i].main.temp);
     }
 
@@ -107,20 +109,4 @@ function displayForecast(weather) {
     document.getElementById('day3temp').innerHTML = day3temp + "°F";
     document.getElementById('day4temp').innerHTML = day4temp + "°F";
     document.getElementById('day5temp').innerHTML = day5temp + "°F";
-}
-
-// method to display the correct icon based on weather type
-function displayIcon(weatherType){
-    sunnyIcon.style.display = "none";
-    snowyIcon.style.display = "none"
-    rainyIcon.style.display = "none";
-    cloudyIcon.style.display = "none";
-    if(weatherType == 'Clouds')
-        cloudyIcon.style.display = "inline-block";
-    else if(weatherType == 'Rain' || weatherType == 'Drizzle' || weatherType == 'Thunderstorm')
-        rainyIcon.style.display = "inline-block";
-    else if(weatherType == 'Snow')
-        snowyIcon.style.display = "inline-block"
-    else if(weatherType == 'Clear')
-        sunnyIcon.style.display = "inline-block";
 }
