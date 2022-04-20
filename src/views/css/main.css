@@ -33,9 +33,8 @@
     --text-color: var(--dark);
     --background: var(--light);
     --background-alt: var(--light-alt);
-    --background-accent:  var(--grey-300);
+    --background-accent: var(--grey-300);
 }
-
 
 
 body {
@@ -47,21 +46,6 @@ body {
 /* Buttons */
 button[type=submit] {
     cursor: pointer;
-}
-
-
-/* Columns */
-.row:after {
-    clear: both;
-    display: table;
-    content: "";
-    padding: 5px;
-}
-
-
-.col-3 {
-    float: left;
-    width: 33.33%; /* ~1/3 width */
 }
 
 /* Utility */
@@ -110,7 +94,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 #box2 {
-  width: 98.5%;
+    width: 98.5%;
 }
 
 #box3 {
@@ -122,17 +106,6 @@ input:focus, textarea:focus, select:focus {
     display: flex;
     width: 50%;
     margin: 25px 25px;
-}
-
-.col1 {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    column-gap: 50px;
-}
-
-.col2 {
-    align-items: center;
 }
 
 .forecastWrapper {
@@ -157,14 +130,14 @@ input:focus, textarea:focus, select:focus {
     display: none;
 }
 
-#box1 .col2 i{
+#box1 .col2 i {
     font-size: 150px;
 }
 
-#box2 i{
+#box2 i {
     font-size: 30px;
 }
 
-#box3 i{
-  font-size: 30px;
+#box3 i {
+    font-size: 30px;
 }
