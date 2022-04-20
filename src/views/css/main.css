@@ -55,7 +55,9 @@ button[type=submit] {
     clear: both;
     display: table;
     content: "";
+    padding: 5px;
 }
+
 
 .col-3 {
     float: left;
@@ -102,28 +104,19 @@ input:focus, textarea:focus, select:focus {
 }
 
 #box1 {
-    top: 30%;
-    left: 21%;
     /*border: 1px solid; */
-    width: 35%;
-    display: flex;
-    flex-direction: row;
     min-height: 200px;
+    width: 98.5%;
 }
 
 #box2 {
-    display: flex;
-    flex-direction: column;
-    /*  border: 1px solid; */
-    row-gap: 40px;
+  width: 98.5%;
 }
 
 #box3 {
-    display: flex;
-    flex-direction: column;
-    /*  border: 1px solid; */
-    row-gap: 40px;
+  width: 98.5%;
 }
+
 
 .col1, .col2 {
     display: flex;
@@ -170,4 +163,8 @@ input:focus, textarea:focus, select:focus {
 
 #box2 i{
     font-size: 30px;
+}
+
+#box3 i{
+  font-size: 30px;
 }
