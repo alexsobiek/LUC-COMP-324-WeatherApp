@@ -10,6 +10,10 @@
     content: "";
 }
 
+.row > * {
+    padding: 0.5rem;
+}
+
 .col-1 {
   width: 100%
 }
