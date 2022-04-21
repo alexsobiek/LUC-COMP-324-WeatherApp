@@ -109,4 +109,34 @@ function displayForecast(weather) {
     document.getElementById('day3temp').innerHTML = day3temp + "°F";
     document.getElementById('day4temp').innerHTML = day4temp + "°F";
     document.getElementById('day5temp').innerHTML = day5temp + "°F";
+
+    // get the type of weather for each of the next 5 days
+    let weatherDay1 = weather.list[0].weather[0].main;
+    let weatherDay2 = weather.list[8].weather[0].main;
+    let weatherDay3 = weather.list[16].weather[0].main;
+    let weatherDay4 = weather.list[32].weather[0].main;
+    let weatherDay5 = weather.list[39].weather[0].main;
+
+    // display data on page
+    document.getElementById('day1icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay1)}"></i>`;
+    document.getElementById('day2icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay2)}"></i>`;
+    document.getElementById('day3icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay3)}"></i>`;
+    document.getElementById('day4icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay4)}"></i>`;
+    document.getElementById('day5icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay5)}"></i>`;
+    
+}
+
+// convert weather type into icon name for that weather
+// ex Clouds --> cloud-sun-fill 
+function convertIconName(weatherType){
+    if (weatherType === 'Clouds')
+        weatherType = "cloud-sun-fill";
+    else if (weatherType === 'Rain' || weatherType === 'Drizzle' || weatherType === 'Thunderstorm')
+        weatherType = "cloud-rain-fill";
+    else if (weatherType === 'Snow')
+        weatherType = "cloud-snow-fill"
+    else if (weatherType === 'Clear')
+        weatherType = "brightness-high-fill"
+    
+    return weatherType;
 }
