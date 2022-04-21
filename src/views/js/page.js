@@ -9,10 +9,6 @@ window.onscroll = function () {
     else navTopSelector.classList.remove("nav-bg");
 };
 
-function setHeaderBackground(name) {
-    header.style.backgroundImage = `url('/img/${name}')`;
-}
-
 function toggleTheme() {
     if (theme === "light") {
         setTheme("dark")
@@ -22,7 +18,9 @@ function toggleTheme() {
 }
 
 function setTheme(newTheme) {
-    document.body.className = document.body.className.replace(theme, newTheme);
+    if (document.body.className.indexOf(theme) !== -1)
+        document.body.className = document.body.className.replace(theme, newTheme);
+    else document.body.classList.add(theme);
     theme = newTheme;
 
     let html = `<i class="bi bi-moon${(newTheme === "light") ? "" : "-fill"}"></i>`
