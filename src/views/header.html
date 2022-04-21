@@ -13,33 +13,44 @@
     <!-- CSS -->
     {{css}}
 </head>
-<body class="light">
-    <nav class="navbar-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-3">
-                    <div class="navbar-name text-lg text-center-md">Weather App</div>
-                </div>
-                <div class="col-3">
-                    <div class="search-bar">
-                        <form id="navSearch">
-                            <label for="navSearchInput"></label>
-                            <input type="text" class="bg-color-alt text-color" id="navSearchInput" name="value" placeholder="City/Zip Code">
-                            <button type="submit"><i class="bi bi-search"></i></button>
-                        </form>
+<body>
+    <div class="header">
+        <nav class="navbar-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="navbar-name text-lg text-center-md">Weather App</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="search-bar">
+                            <form id="navSearch">
+                                <label for="navSearchInput"></label>
+                                <input type="text" class="bg-color-alt text-color" id="navSearchInput" name="value" placeholder="City/Zip Code">
+                                <button type="submit"><i class="bi bi-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-3 text-end text-center-md">
+                        <ul class="nav-items">
+                            <li class="nav-item">
+                                <!-- TODO: Toggle units -->
+                                <span class="hover units-toggle">°F</span>
+                            </li>
+                            <li class="nav-item">
+                                <span class="hover brightness-toggle"></span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-3 text-end text-center-md">
-                    <ul class="nav-items">
-                        <li class="nav-item">
-                            <!-- TODO: Toggle units -->
-                            <span class="hover units-toggle">°F</span>
-                        </li>
-                        <li class="nav-item">
-                            <span class="hover brightness-toggle"></span>
-                        </li>
-                    </ul>
+            </div>
+        </nav>
+        <div class="header-content">
+            <div class="container">
+                <span id="header-condition-icon"></span>
+                <div class="summary">
+                    <h1 class="text-xlg city"></h1>
+                    <h2 class="text-lg"><span class="temp"></span> - <span class="condition"></span></h2>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
