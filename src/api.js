@@ -59,7 +59,7 @@ function request(path, params, callback) {
     for (const key in params) path += `&${key}=${params[key]}`;
 
     const options = {
-        host: 'api.openweathermap.org', port: 443, method: 'GET', path: `/data/2.5/${path}`,
+        host: 'api.openweathermap.org', port: 443, method: 'GET', path: `/data/2.5/${encodeURI(path)}`,
     };
 
     const response = {};

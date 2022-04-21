@@ -14,7 +14,7 @@ navSearch.addEventListener("submit", event => {
 
     // Sanitize form data
     let val = navSearchInput.value;
-    val = val.replace(/\s+/, ",");
+    val = val.trim();
 
     getWeather(val).then(() => {
         navSearchInput.value = ""; // Clear search bar
@@ -41,7 +41,7 @@ function getWeather(query) {
                 displayWeather(json[0].data);
                 displayForecast(json[1].data);
                 let city = json[0].data.name;
-                window.history.pushState(city, "", query);
+                window.history.pushState(city, "", encodeURI(query));
             } else throw new Error("Failed to retrieve weather data");
         });
     });
