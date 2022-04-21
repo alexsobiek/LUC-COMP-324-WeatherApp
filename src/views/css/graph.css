@@ -1,0 +1,14 @@
+.radial-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 5px solid var(--background);
+    transform: rotate(45deg);
+}
+
+.radial-colored {
+    border-right-color: var(--yellow-600);
+    border-bottom-color: var(--yellow-600);
+}

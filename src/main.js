@@ -41,13 +41,17 @@ engine.addJs("weather.js");
 // Homepage
 app.get("/", (req, res) => {
     res.render("home", {
-        title: "Home"
+        title: "Home",
+        css: ["graph.css"],
+        js: ["graph.js"]
     });
 });
 
 app.get("/:query", (req, res) => {
     res.render("home", {
         title: "Home",
+        css: ["graph.css"],
+        js: ["graph.js"],
         query: req.params.query
     });
 });
