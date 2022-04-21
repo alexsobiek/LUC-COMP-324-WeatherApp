@@ -129,3 +129,13 @@ function convertIconName(weatherType){
 
     return weatherType;
 }
+
+function formatTemp(temp) {
+    return Math.round(temp) + (units === "imperial" ? "°F" : "°C");
+}
+
+function dateToLocaleHHMM(offset, date) {
+    // For displaying times, we want to show them in local time. Therefore, we calculate the offset between the local
+    // time of the browser, and the timezone offset of the queried location.
+    return new Date(date.getTime() + (((new Date().getTimezoneOffset() * 60) + offset) * 1000)).toLocaleTimeString('en-US');
+}
