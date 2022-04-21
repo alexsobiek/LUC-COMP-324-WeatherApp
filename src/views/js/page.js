@@ -4,6 +4,15 @@ let theme = "light";
 setTheme(theme);
 brightnessSelectors.forEach(selector => selector.addEventListener("click", toggleTheme))
 
+window.onscroll = function () {
+    if (window.scrollY >= 50 ) navTopSelector.classList.add("nav-bg");
+    else navTopSelector.classList.remove("nav-bg");
+};
+
+function setHeaderBackground(name) {
+    header.style.backgroundImage = `url('/img/${name}')`;
+}
+
 function toggleTheme() {
     if (theme === "light") {
         setTheme("dark")

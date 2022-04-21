@@ -15,6 +15,7 @@ app.use(morgan("tiny"));
 // Set static routes
 app.use("/css", express.static(path.join(__dirname, "views", "css")));
 app.use("/js", express.static(path.join(__dirname, "views", "js")));
+app.use("/img", express.static(path.join(__dirname, "views", "img")));
 app.use("/icons", express.static(path.join(__dirname, "..", "node_modules", "bootstrap-icons", "font")));
 
 // Set view-related options

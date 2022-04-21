@@ -44,7 +44,7 @@ function getWeather(query) {
                 window.history.pushState(city, "", query);
             } else throw new Error("Failed to retrieve weather data");
         });
-    })
+    });
 }
 
 // shows current weather for selected zip code
@@ -59,19 +59,8 @@ function displayWeather(weather) {
     // ====== returns wrong time ========
     let time = (sunset.getUTCHours()+5) + ":" + sunset.getUTCMinutes() + "PM";
 
-    let weatherIcon;
-
-    if (weatherType === 'Clouds')
-        weatherIcon = "cloud-sun-fill";
-    else if (weatherType === 'Rain' || weatherType === 'Drizzle' || weatherType === 'Thunderstorm')
-        weatherIcon = "cloud-rain-fill";
-    else if (weatherType === 'Snow')
-        weatherIcon = "cloud-snow-fill"
-    else if (weatherType === 'Clear')
-        weatherIcon = "brightness-high-fill"
-
     // display data on page
-    document.getElementById('city').innerHTML = `<i class="bi bi-${weatherIcon}"></i> ${city}`;
+    document.getElementById('city').innerHTML = `<i class="bi bi-${convertIconName(weatherType)}"></i> ${city}`;
     document.getElementById('temp').innerHTML = temp;
     document.getElementById('wind').innerHTML = wind + "mph";
     document.getElementById('humidity').innerHTML = humidity + "%";
@@ -123,11 +112,11 @@ function displayForecast(weather) {
     document.getElementById('day3icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay3)}"></i>`;
     document.getElementById('day4icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay4)}"></i>`;
     document.getElementById('day5icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay5)}"></i>`;
-    
+
 }
 
 // convert weather type into icon name for that weather
-// ex Clouds --> cloud-sun-fill 
+// ex Clouds --> cloud-sun-fill
 function convertIconName(weatherType){
     if (weatherType === 'Clouds')
         weatherType = "cloud-sun-fill";
@@ -137,6 +126,6 @@ function convertIconName(weatherType){
         weatherType = "cloud-snow-fill"
     else if (weatherType === 'Clear')
         weatherType = "brightness-high-fill"
-    
+
     return weatherType;
 }
