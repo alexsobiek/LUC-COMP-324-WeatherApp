@@ -32,6 +32,7 @@ engine.addCss("main.css");  // This CSS will apply to ALL pages
 engine.addCss("layout.css");
 engine.addCss("typography.css");
 engine.addCss("nav.css");
+engine.addCss("header.css");
 engine.addCss("../icons/bootstrap-icons.css");
 
 // JS
