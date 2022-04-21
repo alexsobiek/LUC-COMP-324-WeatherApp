@@ -57,7 +57,7 @@ function displayWeather(weather) {
     let humidity = weather.main.humidity;
     let weatherType = weather.weather[0].main;
     // ====== returns wrong time ========
-    let time = sunset.getUTCHours() + ":" + sunset.getUTCMinutes();
+    let time = (sunset.getUTCHours()+5) + ":" + sunset.getUTCMinutes() + "PM";
 
     let weatherIcon;
 
