@@ -35,18 +35,13 @@
 
 /* Boxes */
 .box {
+    overflow: auto;
     background-color: var(--background-alt);
     border-radius: 15px;
     padding: 1rem;
     margin: 1rem 0;
-}
-
-.dark .box {
-    box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.4);
-}
-
-.light .box {
-    box-shadow: 2px 2px 8px 0 rgba(128, 128, 128, 0.4);
+    -webkit-box-shadow: var(--box-shadow);
+    box-shadow: var(--box-shadow);
 }
 
 /* Text Positioning */
