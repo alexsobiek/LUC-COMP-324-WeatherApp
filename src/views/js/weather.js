@@ -63,8 +63,6 @@ function getWeather(query) {
 
 // shows current weather for selected zip code
 function displayWeather(weather) {
-
-    console.log(weather);
     const city = weather.name;
     const temp = formatTemp(weather.main.temp);
     const feelTemp = formatTemp(weather.main.feels_like);
