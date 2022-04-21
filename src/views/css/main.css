@@ -61,7 +61,6 @@ input:focus, textarea:focus, select:focus {
     outline: 1px solid var(--primary);
 }
 
-
 /* Misc */
 
 #container {
@@ -96,22 +95,27 @@ input:focus, textarea:focus, select:focus {
     align-items: center;
 }
 
-#temp {
-    margin-top: 25%;
+.sunset-progress div {
+    width: 50%;
+    float: left;
 }
 
-#rainyIcon, #sunnyIcon, #cloudyIcon, #snowyIcon {
-    display: none;
+.sunset-progress div p {
+    text-transform: uppercase;
+    font-size: 0.75rem;
 }
 
-#box1 .col2 i {
-    font-size: 150px;
+.daily-weather {
+    list-style-type: none;
+    padding: 0;
 }
 
-#box2 i {
-    font-size: 30px;
+.daily-weather li {
+    padding: 0.25rem;
+    border-bottom: 1px solid var(--background-accent);
 }
 
-#box3 i {
-    font-size: 30px;
+.daily-weather li span {
+    display: inline-block;
+    float: right;
 }
