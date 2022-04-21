@@ -1,8 +1,22 @@
 // Selectors
 const navSearch = document.getElementById("navSearch");
 const navSearchInput = document.getElementById("navSearchInput");
+const headerConditionIcon = document.getElementById("header-condition-icon");
+const citySelectors = document.querySelectorAll(".city");
+const conditionSelectors = document.querySelectorAll(".condition");
+const tempSelectors = document.querySelectorAll(".temp");
+const feelTempSelectors = document.querySelectorAll(".feel-temp");
+const highTempSelectors = document.querySelectorAll(".high-temp");
+const lowTempSelectors = document.querySelectorAll(".low-temp");
+const windSpeedSelectors = document.querySelectorAll(".wind");
+const humiditySelectors = document.querySelectorAll(".humidity");
+const pressureSelectors = document.querySelectorAll(".pressure");
+const sunsetProgressSelector = document.getElementById("sunset-progress");
+const sunriseTimeSelectors = document.querySelectorAll(".sunrise-time");
+const sunsetTimeSelectors = document.querySelectorAll(".sunset-time");
 
 // Variables
+const updateGraph = new Event("updateGraph");
 let units = "imperial";
 
 // call so when the page first loads it shows Chicago weather
@@ -49,30 +63,49 @@ function getWeather(query) {
 
 // shows current weather for selected zip code
 function displayWeather(weather) {
-    let city = weather.name;
-    let temp = Math.round(weather.main.temp) + "°F";
-    let wind = weather.wind.speed;
-    let sunset = new Date(weather.sys.sunset);
-    let pressure = weather.main.pressure;
-    let humidity = weather.main.humidity;
-    let weatherType = weather.weather[0].main;
-    // ====== returns wrong time ========
-    let time = (sunset.getUTCHours()+5) + ":" + sunset.getUTCMinutes() + "PM";
 
-    // display data on page
-    document.getElementById('city').innerHTML = `<i class="bi bi-${convertIconName(weatherType)}"></i> ${city}`;
-    document.getElementById('temp').innerHTML = temp;
-    document.getElementById('wind').innerHTML = wind + "mph";
-    document.getElementById('humidity').innerHTML = humidity + "%";
-    document.getElementById('pressure').innerHTML = pressure;
-    document.getElementById('sunset').innerHTML = time // returns wrong time, need to fix
+    console.log(weather);
+    const city = weather.name;
+    const temp = formatTemp(weather.main.temp);
+    const feelTemp = formatTemp(weather.main.feels_like);
+    const highTemp = formatTemp(weather.main.temp_max);
+    const lowTemp = formatTemp(weather.main.temp_min);
+    const wind = weather.wind.speed + (units === "imperial" ? " mph" : " m/s");
+    const currentTime = new Date(weather.dt * 1000);
+    const timeOffset = weather.timezone;
+    const sunrise = new Date(weather.sys.sunrise * 1000);
+    const sunset = new Date(weather.sys.sunset * 1000);
+    const pressure = weather.main.pressure + " hPa";
+    const humidity = weather.main.humidity + "%";
+    const weatherType = weather.weather[0].main;
 
-    // change color of temp reading
-    // (blue if less than 50 degrees, red if more than)
-    if (Math.round(weather.main.temp) < 50)
-        document.getElementById('temp').classList.add("text-primary");
-    else
-        document.getElementById('temp').classList.add("text-red");
+    citySelectors.forEach(elem => elem.innerHTML = city);
+    conditionSelectors.forEach(elem => elem.innerHTML = weatherType);
+    tempSelectors.forEach(elem => {
+        if (Math.round(weather.main.temp) < 70) elem.classList.add("text-primary");
+        else elem.classList.add("text-red");
+        elem.innerHTML = temp
+    });
+
+
+    // Display data on page
+    sunriseTimeSelectors.forEach(elem => elem.innerHTML = dateToLocaleHHMM(timeOffset, sunrise));
+    sunsetTimeSelectors.forEach(elem => elem.innerHTML = dateToLocaleHHMM(timeOffset, sunset));
+    feelTempSelectors.forEach(elem => elem.innerHTML = feelTemp);
+    highTempSelectors.forEach(elem => elem.innerHTML = highTemp);
+    lowTempSelectors.forEach(elem => elem.innerHTML = lowTemp);
+    windSpeedSelectors.forEach(elem => elem.innerHTML = wind);
+    humiditySelectors.forEach(elem => elem.innerHTML = humidity);
+    pressureSelectors.forEach(elem => elem.innerHTML = pressure);
+
+    if (currentTime < sunrise) { // sun has set already, wait for next day
+        sunsetProgressSelector.dataset.progress = "100";
+    } else { // we're somewhere between sunrise and sunset, calculate percentage
+        sunsetProgressSelector.dataset.progress = `${((currentTime - sunrise) * 100) / (sunset - sunrise)}`;
+    }
+    sunsetProgressSelector.dispatchEvent(updateGraph);
+
+    headerConditionIcon.innerHTML = `<i class="summary-icon bi bi-${convertIconName(weatherType)}"></i>`
 }
 
 // get the temp for the next five days
@@ -117,7 +150,7 @@ function displayForecast(weather) {
 
 // convert weather type into icon name for that weather
 // ex Clouds --> cloud-sun-fill
-function convertIconName(weatherType){
+function convertIconName(weatherType) {
     if (weatherType === 'Clouds')
         weatherType = "cloud-sun-fill";
     else if (weatherType === 'Rain' || weatherType === 'Drizzle' || weatherType === 'Thunderstorm')
