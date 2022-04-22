@@ -82,8 +82,6 @@ function displayWeather(weather) {
     citySelectors.forEach(elem => elem.innerHTML = city);
     conditionSelectors.forEach(elem => elem.innerHTML = weatherType);
     tempSelectors.forEach(elem => {
-
-
         formatTempElement(elem, weather.main.temp)
         elem.innerText = temp
     });
@@ -106,14 +104,19 @@ function displayWeather(weather) {
     }
     sunsetProgressSelector.dispatchEvent(updateGraph);
 
-    headerConditionIcon.innerHTML = `<i class="summary-icon bi bi-${convertIconName(weatherType)}"></i>`
+    const headerIcon = document.createElement("i");
+    headerIcon.classList.add("summary-icon");
+    headerIcon.classList.add("bi");
+    headerIcon.classList.add(`bi-${convertIconName(weatherType)}`);
+    clearElements(headerConditionIcon);
+    headerConditionIcon.append(headerIcon);
 }
 
 // get the temp for the next five days
 function displayForecast(weather) {
     const dayTemps = [];
 
-    hourlyForecastSelector.removeChild(hourlyForecastSelector.firstChild);
+    clearElements(hourlyForecastSelector);
 
     for (const hour of weather.list) {
         addHourlyWeather(hour);
@@ -207,7 +210,7 @@ function addHourlyWeather(weather) {
     precipIcon.classList.add("bi");
     precipIcon.classList.add("bi-droplet");
     const precipSpan = document.createElement("span");
-    precipSpan.innerText = ` ${weather.pop * 100}%`
+    precipSpan.innerText = ` ${Math.round(weather.pop * 100)}%`
     precipContainer.append(precipIcon);
     precipContainer.append(precipSpan);
     precipElem.append(precipContainer);
@@ -219,7 +222,6 @@ function addHourlyWeather(weather) {
 
     hourlyForecastSelector.append(forecastElem);
 }
-
 
 // convert weather type into icon name for that weather
 // ex Clouds --> cloud-sun-fill
@@ -266,4 +268,8 @@ function toLocaleMM(date) {
     });
     if (s.startsWith("0")) s = s.substring(1);
     return s;
+}
+
+function clearElements(elem) {
+    while(elem.firstChild) elem.removeChild(elem.firstChild);
 }
