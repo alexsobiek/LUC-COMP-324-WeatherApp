@@ -119,3 +119,43 @@ input:focus, textarea:focus, select:focus {
     display: inline-block;
     float: right;
 }
+
+/* Hourly Forecast */
+#hourly-forecast h2 {
+    font-weight: 300;
+}
+
+.hourly-forecast-entry {
+    display: flex;
+}
+
+.hourly-forecast-entry > div {
+    width: 25%;
+}
+
+.hourly-forecast-entry .hourly-date {
+    order: 0;
+}
+
+.hourly-forecast .hourly-condition {
+    order: 1;
+}
+
+.hourly-forecast .hourly-temp {
+    order: 2;
+}
+
+.hourly-forecast-entry .hourly-precip {
+    .order: 3;
+}
+
+.hourly-forecast-entry .hourly-date span {
+    display: block;
+}
+
+
+.hourly-forecast-entry .hourly-condition,
+.hourly-forecast-entry .hourly-precip,
+.hourly-forecast-entry .hourly-temp {
+    line-height: 3.5rem;
+}

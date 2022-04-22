@@ -14,10 +14,12 @@ const pressureSelectors = document.querySelectorAll(".pressure");
 const sunsetProgressSelector = document.getElementById("sunset-progress");
 const sunriseTimeSelectors = document.querySelectorAll(".sunrise-time");
 const sunsetTimeSelectors = document.querySelectorAll(".sunset-time");
+const hourlyForecastSelector = document.getElementById("hourly-forecast");
 
 // Variables
 const updateGraph = new Event("updateGraph");
 let units = "imperial";
+let timeOffset = 0;
 
 // call so when the page first loads it shows Chicago weather
 getWeather((query !== "undefined") ? query : 60622).catch(console.error);
@@ -70,7 +72,7 @@ function displayWeather(weather) {
     const lowTemp = formatTemp(weather.main.temp_min);
     const wind = weather.wind.speed + (units === "imperial" ? " mph" : " m/s");
     const currentTime = new Date(weather.dt * 1000);
-    const timeOffset = weather.timezone;
+    timeOffset = weather.timezone;
     const sunrise = new Date(weather.sys.sunrise * 1000);
     const sunset = new Date(weather.sys.sunset * 1000);
     const pressure = weather.main.pressure + " hPa";
@@ -80,21 +82,22 @@ function displayWeather(weather) {
     citySelectors.forEach(elem => elem.innerHTML = city);
     conditionSelectors.forEach(elem => elem.innerHTML = weatherType);
     tempSelectors.forEach(elem => {
-        if (Math.round(weather.main.temp) < 70) elem.classList.add("text-primary");
-        else elem.classList.add("text-red");
-        elem.innerHTML = temp
+
+
+        formatTempElement(elem, weather.main.temp)
+        elem.innerText = temp
     });
 
 
     // Display data on page
-    sunriseTimeSelectors.forEach(elem => elem.innerHTML = dateToLocaleHHMM(timeOffset, sunrise));
-    sunsetTimeSelectors.forEach(elem => elem.innerHTML = dateToLocaleHHMM(timeOffset, sunset));
-    feelTempSelectors.forEach(elem => elem.innerHTML = feelTemp);
-    highTempSelectors.forEach(elem => elem.innerHTML = highTemp);
-    lowTempSelectors.forEach(elem => elem.innerHTML = lowTemp);
-    windSpeedSelectors.forEach(elem => elem.innerHTML = wind);
-    humiditySelectors.forEach(elem => elem.innerHTML = humidity);
-    pressureSelectors.forEach(elem => elem.innerHTML = pressure);
+    sunriseTimeSelectors.forEach(elem => elem.innerText = toLocalDate(sunrise).toLocaleTimeString('en-US'));
+    sunsetTimeSelectors.forEach(elem => elem.innerText = toLocalDate(sunset).toLocaleTimeString('en-US'));
+    feelTempSelectors.forEach(elem => elem.innerText = feelTemp);
+    highTempSelectors.forEach(elem => elem.innerText = highTemp);
+    lowTempSelectors.forEach(elem => elem.innerText = lowTemp);
+    windSpeedSelectors.forEach(elem => elem.innerText = wind);
+    humiditySelectors.forEach(elem => elem.innerText = humidity);
+    pressureSelectors.forEach(elem => elem.innerText = pressure);
 
     if (currentTime < sunrise) { // sun has set already, wait for next day
         sunsetProgressSelector.dataset.progress = "100";
@@ -109,6 +112,13 @@ function displayWeather(weather) {
 // get the temp for the next five days
 function displayForecast(weather) {
     const dayTemps = [];
+
+    hourlyForecastSelector.removeChild(hourlyForecastSelector.firstChild);
+
+    for (const hour of weather.list) {
+        addHourlyWeather(hour);
+    }
+
 
     // store the temp for every 3 hours
     for (let i = 0; i < 40; i++) {
@@ -146,6 +156,71 @@ function displayForecast(weather) {
 
 }
 
+function addHourlyWeather(weather) {
+    const forecastElem = document.createElement("div");
+    forecastElem.classList.add("box");
+    forecastElem.classList.add("hourly-forecast-entry");
+
+    const date = toLocalDate(new Date(weather.dt * 1000));
+
+    const dateElem = document.createElement("div");
+    dateElem.classList.add("hourly-date");
+    const monthElem = document.createElement("span");
+    monthElem.classList.add("text-lg");
+    monthElem.innerText = toLocaleMMDD(date);
+    const timeElem = document.createElement("span");
+    timeElem.classList.add("text-muted");
+    timeElem.innerText = toLocaleMM(date);
+    dateElem.append(monthElem);
+    dateElem.append(timeElem);
+
+    const conditionElem = document.createElement("div");
+    conditionElem.classList.add("hourly-condition");
+    const conditionContainer = document.createElement("div");
+    conditionContainer.classList.add("text-lg");
+    const conditionIcon = document.createElement("i");
+    conditionIcon.classList.add("bi");
+    conditionIcon.classList.add(`bi-${convertIconName(weather.weather[0].main)}`);
+    const conditionSpan = document.createElement("span");
+    conditionSpan.innerText = ` ${weather.weather[0].main}`;
+    conditionContainer.append(conditionIcon);
+    conditionContainer.append(conditionSpan);
+    conditionElem.append(conditionContainer);
+
+    const tempsElem = document.createElement("div");
+    tempsElem.classList.add("hourly-temp");
+    tempsElem.classList.add("text-center");
+
+    const tempElem = document.createElement("span");
+    tempElem.classList.add("text-lg");
+    tempElem.innerText = formatTemp(weather.main.temp);
+    formatTempElement(tempElem, weather.main.temp);
+    tempsElem.append(tempElem);
+
+
+    const precipElem = document.createElement("div");
+    precipElem.classList.add("hourly-precip");
+    precipElem.classList.add("text-end");
+
+    const precipContainer = document.createElement("div");
+    const precipIcon = document.createElement("i");
+    precipIcon.classList.add("bi");
+    precipIcon.classList.add("bi-droplet");
+    const precipSpan = document.createElement("span");
+    precipSpan.innerText = ` ${weather.pop * 100}%`
+    precipContainer.append(precipIcon);
+    precipContainer.append(precipSpan);
+    precipElem.append(precipContainer);
+
+    forecastElem.append(dateElem);
+    forecastElem.append(conditionElem);
+    forecastElem.append(tempsElem);
+    forecastElem.append(precipElem);
+
+    hourlyForecastSelector.append(forecastElem);
+}
+
+
 // convert weather type into icon name for that weather
 // ex Clouds --> cloud-sun-fill
 function convertIconName(weatherType) {
@@ -161,12 +236,34 @@ function convertIconName(weatherType) {
     return weatherType;
 }
 
+function formatTempElement(elem, temp) {
+    if (temp <= 70) elem.classList.add("text-primary");
+    else elem.classList.add("text-red");
+}
+
 function formatTemp(temp) {
     return Math.round(temp) + (units === "imperial" ? "°F" : "°C");
 }
 
-function dateToLocaleHHMM(offset, date) {
+function toLocalDate(date) {
     // For displaying times, we want to show them in local time. Therefore, we calculate the offset between the local
     // time of the browser, and the timezone offset of the queried location.
-    return new Date(date.getTime() + (((new Date().getTimezoneOffset() * 60) + offset) * 1000)).toLocaleTimeString('en-US');
+    return new Date(date.getTime() + (((new Date().getTimezoneOffset() * 60) + timeOffset) * 1000));
+}
+
+function toLocaleMMDD(date) {
+    let s = date.toLocaleString('en-US', {
+        month: '2-digit',
+        day: '2-digit'
+    });
+    if (s.startsWith("0")) s = s.substring(1);
+    return s;
+}
+
+function toLocaleMM(date) {
+    let s = date.toLocaleString('en-US', {
+        hour: '2-digit',
+    });
+    if (s.startsWith("0")) s = s.substring(1);
+    return s;
 }
