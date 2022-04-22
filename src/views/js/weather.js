@@ -99,7 +99,7 @@ function displayWeather(weather) {
     if (currentTime < sunrise) { // sun has set already, wait for next day
         sunsetProgressSelector.dataset.progress = "100";
     } else { // we're somewhere between sunrise and sunset, calculate percentage
-        sunsetProgressSelector.dataset.progress = `${((currentTime - sunrise) * 100) / (sunset - sunrise)}`;
+        sunsetProgressSelector.dataset.progress = `${Math.min(((currentTime - sunrise) * 100) / (sunset - sunrise), 100)}`;
     }
     sunsetProgressSelector.dispatchEvent(updateGraph);
 
