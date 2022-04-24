@@ -33,7 +33,7 @@ function changeUnits(){
         setUnits("metric");
     }
     else{
-        unitText.innerHTML = "°C";
+        unitText.innerHTML = "°F";
         setUnits("imperial");
     }
 }
