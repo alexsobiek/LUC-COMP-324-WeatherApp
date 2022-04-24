@@ -315,11 +315,11 @@ function iconFromId(id, day = true) {
 }
 
 function formatTempElement(elem, temp) {
-    if(units === "imperial"){
-        if (temp <= 70) elem.classList.add("text-primary");
-        else elem.classList.add("text-red");
+    if ((units === "imperial" && temp <= 70) || (units === "metric" && temp <= 21)) {
+        if (elem.classList.contains("text-red")) elem.classList.replace("text-red", "text-primary");
+        else elem.classList.add("text-primary");
     } else {
-        if (temp <= 21) elem.classList.add("text-primary");
+        if (elem.classList.contains("text-primary")) elem.classList.replace("text-red", "text-red");
         else elem.classList.add("text-red");
     }
 }
