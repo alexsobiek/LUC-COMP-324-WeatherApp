@@ -15,11 +15,34 @@ const sunsetProgressSelector = document.getElementById("sunset-progress");
 const sunriseTimeSelectors = document.querySelectorAll(".sunrise-time");
 const sunsetTimeSelectors = document.querySelectorAll(".sunset-time");
 const hourlyForecastSelector = document.getElementById("hourly-forecast");
+let lastZip = 60622;
 
 // Variables
 const updateGraph = new Event("updateGraph");
-let units = "imperial";
 let timeOffset = 0;
+
+const unitSelector = document.querySelectorAll(".units-toggle");
+let units = "imperial";
+
+// change between metric and imperial
+unitSelector.forEach(selector => selector.addEventListener("click", changeUnits));
+function changeUnits(){
+    const unitText = document.getElementById('unit-toggle');
+    if (units == "imperial"){
+        unitText.innerHTML = "°C";
+        setUnits("metric");
+    }
+    else{
+        unitText.innerHTML = "°C";
+        setUnits("imperial");
+    }
+}
+
+function setUnits(unit){
+    units = unit;
+    // call with api with new units
+    getWeather(lastZip);
+}
 
 // call so when the page first loads it shows Chicago weather
 getWeather((query !== "undefined") ? query : 60622).catch(console.error);
@@ -31,6 +54,7 @@ navSearch.addEventListener("submit", event => {
     // Sanitize form data
     let val = navSearchInput.value;
     val = val.trim();
+    lastZip = val;
 
     getWeather(val).then(() => {
         navSearchInput.value = ""; // Clear search bar
@@ -57,6 +81,7 @@ function getWeather(query) {
                 displayWeather(json[0].data);
                 displayForecast(json[1].data);
                 let city = json[0].data.name;
+                console.log(json[0]);
                 window.history.pushState(city, "", encodeURI(query));
             } else throw new Error("Failed to retrieve weather data");
         });
@@ -137,11 +162,11 @@ function displayForecast(weather) {
 
     //console.log(day1temp, day2temp, day3temp, day4temp, day5temp);
     // send to html
-    document.getElementById('day1temp').innerHTML = day1temp + "°F";
-    document.getElementById('day2temp').innerHTML = day2temp + "°F";
-    document.getElementById('day3temp').innerHTML = day3temp + "°F";
-    document.getElementById('day4temp').innerHTML = day4temp + "°F";
-    document.getElementById('day5temp').innerHTML = day5temp + "°F";
+    document.getElementById('day1temp').innerHTML = formatTemp(day1temp);
+    document.getElementById('day2temp').innerHTML = formatTemp(day2temp);
+    document.getElementById('day3temp').innerHTML = formatTemp(day3temp);
+    document.getElementById('day4temp').innerHTML = formatTemp(day4temp);
+    document.getElementById('day5temp').innerHTML = formatTemp(day5temp);
 
     // get the type of weather for each of the next 5 days
     let weatherDay1 = weather.list[0].weather[0].main;
@@ -239,8 +264,13 @@ function convertIconName(weatherType) {
 }
 
 function formatTempElement(elem, temp) {
-    if (temp <= 70) elem.classList.add("text-primary");
-    else elem.classList.add("text-red");
+    if(units === "imperial"){
+        if (temp <= 70) elem.classList.add("text-primary");
+        else elem.classList.add("text-red");
+    } else {
+        if (temp <= 21) elem.classList.add("text-primary");
+        else elem.classList.add("text-red");
+    }
 }
 
 function formatTemp(temp) {
