@@ -141,6 +141,7 @@ function displayWeather(weather) {
 
 // get the temp for the next five days
 function displayForecast(weather) {
+    clearElements(dailyForecastSelector);
     clearElements(hourlyForecastSelector);
 
     const highs = new Map();
