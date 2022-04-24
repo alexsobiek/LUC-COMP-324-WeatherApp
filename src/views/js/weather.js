@@ -76,8 +76,8 @@ function displayWeather(weather) {
     const wind = weather.wind.speed + (units === "imperial" ? " mph" : " m/s");
     const currentTime = new Date(weather.dt * 1000);
     timeOffset = weather.timezone;
-    const sunrise = new Date(weather.sys.sunrise * 1000);
-    const sunset = new Date(weather.sys.sunset * 1000);
+    sunrise = new Date(weather.sys.sunrise * 1000);
+    sunset = new Date(weather.sys.sunset * 1000);
     const pressure = weather.main.pressure + " hPa";
     const humidity = weather.main.humidity + "%";
     const weatherType = weather.weather[0].main;
@@ -88,7 +88,6 @@ function displayWeather(weather) {
         formatTempElement(elem, weather.main.temp)
         elem.innerText = temp
     });
-
 
     // Display data on page
     sunriseTimeSelectors.forEach(elem => elem.innerText = toLocalDate(sunrise).toLocaleTimeString('en-US'));
@@ -110,7 +109,7 @@ function displayWeather(weather) {
     const headerIcon = document.createElement("i");
     headerIcon.classList.add("summary-icon");
     headerIcon.classList.add("bi");
-    headerIcon.classList.add(`bi-${convertIconName(weatherType)}`);
+    headerIcon.classList.add(`bi-${iconFromId(weather.weather[0].id, !isNight(currentTime))}`);
     clearElements(headerConditionIcon);
     headerConditionIcon.append(headerIcon);
 }
@@ -197,36 +196,6 @@ function displayForecast(weather) {
         entryElem.append(precipElem);
         dailyForecastSelector.append(entryElem);
     }
-
-    // choose highest temp during that day
-    day1temp = Math.max(dayTemps[0], dayTemps[7]);
-    day2temp = Math.max(dayTemps[8], dayTemps[15]);
-    day3temp = Math.max(dayTemps[16], dayTemps[23]);
-    day4temp = Math.max(dayTemps[24], dayTemps[31]);
-    day5temp = Math.max(dayTemps[32], dayTemps[39]);
-
-    //console.log(day1temp, day2temp, day3temp, day4temp, day5temp);
-    // send to html
-    document.getElementById('day1temp').innerHTML = day1temp + "°F";
-    document.getElementById('day2temp').innerHTML = day2temp + "°F";
-    document.getElementById('day3temp').innerHTML = day3temp + "°F";
-    document.getElementById('day4temp').innerHTML = day4temp + "°F";
-    document.getElementById('day5temp').innerHTML = day5temp + "°F";
-
-    // get the type of weather for each of the next 5 days
-    let weatherDay1 = weather.list[0].weather[0].main;
-    let weatherDay2 = weather.list[8].weather[0].main;
-    let weatherDay3 = weather.list[16].weather[0].main;
-    let weatherDay4 = weather.list[32].weather[0].main;
-    let weatherDay5 = weather.list[39].weather[0].main;
-
-    // display data on page
-    document.getElementById('day1icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay1)}"></i>`;
-    document.getElementById('day2icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay2)}"></i>`;
-    document.getElementById('day3icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay3)}"></i>`;
-    document.getElementById('day4icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay4)}"></i>`;
-    document.getElementById('day5icon').innerHTML = `<i class="bi bi-${convertIconName(weatherDay5)}"></i>`;
-
 }
 
 function addHourlyWeather(weather) {
@@ -234,16 +203,17 @@ function addHourlyWeather(weather) {
     forecastElem.classList.add("box");
     forecastElem.classList.add("hourly-forecast-entry");
 
-    const date = toLocalDate(new Date(weather.dt * 1000));
+    const date = new Date(weather.dt * 1000);
+    const localDate = toLocalDate(date);
 
     const dateElem = document.createElement("div");
     dateElem.classList.add("hourly-date");
     const monthElem = document.createElement("span");
     monthElem.classList.add("text-lg");
-    monthElem.innerText = toLocaleMMDD(date);
+    monthElem.innerText = toLocaleMMDD(localDate);
     const timeElem = document.createElement("span");
     timeElem.classList.add("text-muted");
-    timeElem.innerText = toLocaleMM(date);
+    timeElem.innerText = toLocaleMM(localDate);
     dateElem.append(monthElem);
     dateElem.append(timeElem);
 
@@ -253,7 +223,8 @@ function addHourlyWeather(weather) {
     conditionContainer.classList.add("text-lg");
     const conditionIcon = document.createElement("i");
     conditionIcon.classList.add("bi");
-    conditionIcon.classList.add(`bi-${convertIconName(weather.weather[0].main)}`);
+
+    conditionIcon.classList.add(`bi-${iconFromId(weather.weather[0].id, !isNight(date))}`);
     const conditionSpan = document.createElement("span");
     conditionSpan.innerText = ` ${weather.weather[0].main}`;
     conditionContainer.append(conditionIcon);
@@ -295,17 +266,26 @@ function addHourlyWeather(weather) {
 
 // convert weather type into icon name for that weather
 // ex Clouds --> cloud-sun-fill
-function convertIconName(weatherType) {
-    if (weatherType === 'Clouds')
-        weatherType = "cloud-sun-fill";
-    else if (weatherType === 'Rain' || weatherType === 'Drizzle' || weatherType === 'Thunderstorm')
-        weatherType = "cloud-rain-fill";
-    else if (weatherType === 'Snow')
-        weatherType = "cloud-snow-fill"
-    else if (weatherType === 'Clear')
-        weatherType = "brightness-high-fill"
+function iconFromId(id, day = true) {
 
-    return weatherType;
+    /*
+    200 range = thunderstorm
+    300 range = drizzle
+    500 range = rain
+    600 range = snow
+    700 range = fog-like
+    800 = clear
+    801+ = clouds
+     */
+
+    if (id >= 200 && id < 300) return "cloud-lightning-rain-fill";
+    else if (id >= 300 && id < 400) return "cloud-drizzle-fill";
+    else if (id >= 500 && id < 600) return "cloud-rain-fill";
+    else if (id >= 600 && id < 700) return "cloud-snow-fill";
+    else if (id >= 700 && id < 800) return "cloud-fog2-fill";
+    else if (id > 800) return (day) ? "cloud-sun-fill" : "cloud-moon-fill";
+    else if (id === 800) return (day) ? "brightness-high-fill" : "moon-stars-fill";
+    else return "question";
 }
 
 function formatTempElement(elem, temp) {
@@ -340,6 +320,14 @@ function toLocaleMM(date) {
     return s;
 }
 
+function getDaySeconds(date) {
+    return date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+}
+
+function isNight(date) {
+    return getDaySeconds(sunrise) > getDaySeconds(date) || getDaySeconds(date) > getDaySeconds(sunset);
+}
+
 function clearElements(elem) {
-    while(elem.firstChild) elem.removeChild(elem.firstChild);
+    while (elem.firstChild) elem.removeChild(elem.firstChild);
 }
