@@ -14,12 +14,15 @@ const pressureSelectors = document.querySelectorAll(".pressure");
 const sunsetProgressSelector = document.getElementById("sunset-progress");
 const sunriseTimeSelectors = document.querySelectorAll(".sunrise-time");
 const sunsetTimeSelectors = document.querySelectorAll(".sunset-time");
+const dailyForecastSelector = document.getElementById("daily-forecast");
 const hourlyForecastSelector = document.getElementById("hourly-forecast");
 
 // Variables
 const updateGraph = new Event("updateGraph");
 let units = "imperial";
 let timeOffset = 0;
+let sunset;
+let sunrise;
 
 // call so when the page first loads it shows Chicago weather
 getWeather((query !== "undefined") ? query : 60622).catch(console.error);
@@ -114,18 +117,85 @@ function displayWeather(weather) {
 
 // get the temp for the next five days
 function displayForecast(weather) {
-    const dayTemps = [];
-
     clearElements(hourlyForecastSelector);
 
+    const highs = new Map();
+    const lows = new Map();
+    const pop = new Map();
+    const conditions = new Map();
+
     for (const hour of weather.list) {
+        const date = new Date(hour.dt * 1000);
+        const day = date.getDay();
+        if (!highs.has(day) || highs.get(day) < hour.main.temp_max) highs.set(day, hour.main.temp_max);
+        if (!lows.has(day) || lows.get(day) > hour.main.temp_min) lows.set(day, hour.main.temp_min);
+        if (!pop.has(day) || pop.get(day) < hour.pop) pop.set(day, hour.pop);
+
+        // Custom logic for determining "overall" condition
+        /* IDs:
+        200 range = thunderstorm
+        300 range = drizzle
+        500 range = rain
+        600 range = snow
+        700 range = fog-like
+        800 = clear
+        801+ = clouds
+
+        Weighting
+        1 - 200 Thunderstorm
+        2 - 600 Snow
+        3 - 500 Rain
+        4 - 300 Drizzle
+        5 - 700 Fog like
+        6 - 801 Clouds
+        7 - 800 Clear
+         */
+
+        let weights = [200, 600, 500, 300, 700, 801, 800];
+        let conditionId = (hour.weather[0].id > 800) ? 801 : Math.floor(hour.weather[0].id / 100) * 100
+        if (!conditions.has(day) || weights.indexOf(conditions.get(day)) > weights.indexOf(conditionId)) conditions.set(day, conditionId);
         addHourlyWeather(hour);
     }
 
+    const today = new Date();
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    // store the temp for every 3 hours
-    for (let i = 0; i < 40; i++) {
-        dayTemps[i] = Math.round(weather.list[i].main.temp);
+    for (const [day, high] of highs) {
+        const low = lows.get(day);
+        const precip = pop.get(day);
+        const condition = conditions.get(day);
+
+        const entryElem = document.createElement("div");
+        entryElem.classList.add("daily-forecast-entry");
+        entryElem.classList.add("text-center");
+
+        const titleElem = document.createElement("span");
+        titleElem.innerText = (day === today.getDay()) ? "Today" : days[day];
+
+        const iconElem = document.createElement("i");
+        iconElem.classList.add("bi");
+        iconElem.classList.add(`bi-${iconFromId(condition)}`);
+
+        iconElem.classList.add("text-xlg");
+
+        const tempElem = document.createElement("p");
+        tempElem.innerText = formatTemp(high);
+
+        const precipElem = document.createElement("p");
+        const precipIcon = document.createElement("i");
+        precipIcon.classList.add("bi");
+        precipIcon.classList.add("bi-droplet");
+
+        const precipValElem = document.createElement("span");
+        precipValElem.innerText = ` ${Math.ceil(precip * 100)}%`;
+        precipElem.append(precipIcon);
+        precipElem.append(precipValElem);
+
+        entryElem.append(titleElem);
+        entryElem.append(iconElem);
+        entryElem.append(tempElem);
+        entryElem.append(precipElem);
+        dailyForecastSelector.append(entryElem);
     }
 
     // choose highest temp during that day
