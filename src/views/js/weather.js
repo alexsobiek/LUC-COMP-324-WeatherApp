@@ -16,13 +16,36 @@ const sunriseTimeSelectors = document.querySelectorAll(".sunrise-time");
 const sunsetTimeSelectors = document.querySelectorAll(".sunset-time");
 const dailyForecastSelector = document.getElementById("daily-forecast");
 const hourlyForecastSelector = document.getElementById("hourly-forecast");
+let lastZip = 60622;
 
 // Variables
 const updateGraph = new Event("updateGraph");
-let units = "imperial";
 let timeOffset = 0;
 let sunset;
 let sunrise;
+
+const unitSelector = document.querySelectorAll(".units-toggle");
+let units = "imperial";
+
+// change between metric and imperial
+unitSelector.forEach(selector => selector.addEventListener("click", changeUnits));
+function changeUnits(){
+    const unitText = document.getElementById('unit-toggle');
+    if (units == "imperial"){
+        unitText.innerHTML = "°C";
+        setUnits("metric");
+    }
+    else{
+        unitText.innerHTML = "°F";
+        setUnits("imperial");
+    }
+}
+
+function setUnits(unit){
+    units = unit;
+    // call with api with new units
+    getWeather(lastZip);
+}
 
 // call so when the page first loads it shows Chicago weather
 getWeather((query !== "undefined") ? query : 60622).catch(console.error);
@@ -34,6 +57,7 @@ navSearch.addEventListener("submit", event => {
     // Sanitize form data
     let val = navSearchInput.value;
     val = val.trim();
+    lastZip = val;
 
     getWeather(val).then(() => {
         navSearchInput.value = ""; // Clear search bar
@@ -60,6 +84,7 @@ function getWeather(query) {
                 displayWeather(json[0].data);
                 displayForecast(json[1].data);
                 let city = json[0].data.name;
+                console.log(json[0]);
                 window.history.pushState(city, "", encodeURI(query));
             } else throw new Error("Failed to retrieve weather data");
         });
@@ -289,8 +314,13 @@ function iconFromId(id, day = true) {
 }
 
 function formatTempElement(elem, temp) {
-    if (temp <= 70) elem.classList.add("text-primary");
-    else elem.classList.add("text-red");
+    if(units === "imperial"){
+        if (temp <= 70) elem.classList.add("text-primary");
+        else elem.classList.add("text-red");
+    } else {
+        if (temp <= 21) elem.classList.add("text-primary");
+        else elem.classList.add("text-red");
+    }
 }
 
 function formatTemp(temp) {
