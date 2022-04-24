@@ -44,11 +44,9 @@ function changeUnits(){
 function setUnits(unit){
     units = unit;
     // call with api with new units
-    getWeather(lastZip);
+    getWeather(lastZip).catch(console.error);
 }
 
-// call so when the page first loads it shows Chicago weather
-getWeather((query !== "undefined") ? query : 60622).catch(console.error);
 
 // Handle nav search form
 navSearch.addEventListener("submit", event => {
@@ -70,6 +68,9 @@ navSearch.addEventListener("submit", event => {
     });
 });
 
+// call so when the page first loads it shows Chicago weather
+getWeather((query !== "undefined") ? query : 60622).catch(console.error);
+
 function getWeather(query) {
     console.log(`Getting weather data for ${query}`);
     return Promise.all([
@@ -84,7 +85,6 @@ function getWeather(query) {
                 displayWeather(json[0].data);
                 displayForecast(json[1].data);
                 let city = json[0].data.name;
-                console.log(json[0]);
                 window.history.pushState(city, "", encodeURI(query));
             } else throw new Error("Failed to retrieve weather data");
         });
