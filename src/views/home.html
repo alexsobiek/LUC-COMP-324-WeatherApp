@@ -1,27 +1,22 @@
 {{include header.html}}
 
-
 <div class="container">
     <div class="row">
         <div class="col-2">
             <div class="box">
-                <h3>Today's Weather</h3>
-
+                <h3 class="box-title">Today's Weather</h3>
                 <div class="row">
                     <div class="col-2">
                         <div id="sunset-progress" class="radial-progress" data-progress="0"></div>
                         <div class="sunset-progress">
-
                             <div class="sunrise-time-container">
                                 <p class="text-muted">Sunrise</p>
                                 <span class="sunrise-time"></span>
-
                             </div>
                             <div class="sunset-time-container text-end">
                                 <p class="text-muted">Sunset</p>
                                 <span class="sunset-time"></span>
                             </div>
-
                         </div>
                     </div>
                     <div class="col-2">
@@ -39,18 +34,16 @@
         </div>
         <div class="col-2">
             <div class="box">
-                <h3>Forecast</h3>
+                <h3 class="box-title">Forecast</h3>
                 <div class="daily-forecast-container">
                     <div id="daily-forecast"></div>
                 </div>
             </div>
         </div>
     </div>
-
     <div id="hourly-forecast">
         <h2 class="text-lg">3 Hour Forecast</h2>
     </div>
-
 </div>
 
 {{include footer.html}}

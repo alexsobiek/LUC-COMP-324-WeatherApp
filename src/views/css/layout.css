@@ -44,6 +44,10 @@
     box-shadow: var(--box-shadow);
 }
 
+.box .box-title {
+    margin: 0 0 1rem 0;
+}
+
 /* Text Positioning */
 .text-center {
     text-align: center;
