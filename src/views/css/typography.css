@@ -1,7 +1,14 @@
 body {
     font-family: sans-serif;
 }
+/* logo Font */
+.logo-font {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
+.logo-font-2 {
+  font-family: "Lucida Console", "Courier New", monospace;
+}
 /* Text Color */
 .text-light {
     color: var(--light);
