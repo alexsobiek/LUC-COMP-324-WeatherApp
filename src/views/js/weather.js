@@ -30,8 +30,28 @@ let timeOffset = 0;
 let sunset;
 let sunrise;
 
-const unitSelector = document.querySelectorAll(".units-toggle");
-let units = "imperial";
+// Handle back/forward browser events
+window.addEventListener('popstate', e => getWeather(e.state).catch(handleError));
+
+// Handle nav search form
+navSearch.addEventListener("submit", event => {
+    event.preventDefault(); // Stop from refreshing page
+
+    // Sanitize form data
+    let val = navSearchInput.value;
+    val = val.trim();
+    lastZip = val;
+
+    getWeather(val).then(() => {
+        navSearchInput.value = ""; // Clear search bar
+    }).catch(error => {
+        navSearch.classList.add("search-error");
+        setTimeout(() => {
+            navSearch.classList.remove("search-error");
+        }, 300)
+        console.error(error);
+    });
+});
 
 // change between metric and imperial
 unitSelector.forEach(selector => selector.addEventListener("click", changeUnits));
