@@ -56,6 +56,10 @@ button[type=submit] {
     cursor: pointer;
 }
 
+.hidden {
+    display: none;
+}
+
 /* Inputs */
 input:focus, textarea:focus, select:focus {
     outline: 1px solid var(--primary);
@@ -141,4 +145,26 @@ input:focus, textarea:focus, select:focus {
 .hourly-forecast-entry .hourly-precip,
 .hourly-forecast-entry .hourly-temp {
     line-height: 3.5rem;
+}
+
+/* Error */
+
+#weather-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#weather-error .weather-error-icon {
+    font-size: 5rem;
+    color: var(--red)
+}
+
+#weather-error h1 {
+    font-size: 3rem;
+}
+
+#weather-error h2 {
+    font-size: 1.5rem;
 }

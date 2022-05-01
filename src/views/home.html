@@ -1,48 +1,57 @@
 {{include header.html}}
 
 <div class="container">
-    <div class="row">
-        <div class="col-2">
-            <div class="box">
-                <h3 class="box-title">Today's Weather</h3>
-                <div class="row">
-                    <div class="col-2">
-                        <div id="sunset-progress" class="radial-progress" data-progress="0"></div>
-                        <div class="sunset-progress">
-                            <div class="sunrise-time-container">
-                                <p class="text-muted">Sunrise</p>
-                                <span class="sunrise-time"></span>
-                            </div>
-                            <div class="sunset-time-container text-end">
-                                <p class="text-muted">Sunset</p>
-                                <span class="sunset-time"></span>
+    <div id="weather-container">
+        <div class="row">
+            <div class="col-2">
+                <div class="box">
+                    <h3 class="box-title">Today's Weather</h3>
+                    <div class="row">
+                        <div class="col-2">
+                            <div id="sunset-progress" class="radial-progress" data-progress="0"></div>
+                            <div class="sunset-progress">
+                                <div class="sunrise-time-container">
+                                    <p class="text-muted">Sunrise</p>
+                                    <span class="sunrise-time"></span>
+                                </div>
+                                <div class="sunset-time-container text-end">
+                                    <p class="text-muted">Sunset</p>
+                                    <span class="sunset-time"></span>
+                                </div>
                             </div>
                         </div>
+                        <div class="col-2">
+                            <ul class="daily-weather">
+                                <li>Feels Like <span class="feel-temp"></span></li>
+                                <li>High <span class="high-temp"></span></li>
+                                <li>Low <span class="low-temp"></span></li>
+                                <li>Wind <span class="wind"></span></li>
+                                <li>Humidity <span class="humidity"></span></li>
+                                <li>Pressure <span class="pressure"></span></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <ul class="daily-weather">
-                            <li>Feels Like <span class="feel-temp"></span></li>
-                            <li>High <span class="high-temp"></span></li>
-                            <li>Low <span class="low-temp"></span></li>
-                            <li>Wind <span class="wind"></span></li>
-                            <li>Humidity <span class="humidity"></span></li>
-                            <li>Pressure <span class="pressure"></span></li>
-                        </ul>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="box">
+                    <h3 class="box-title">Forecast</h3>
+                    <div class="daily-forecast-container">
+                        <div id="daily-forecast"></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-2">
-            <div class="box">
-                <h3 class="box-title">Forecast</h3>
-                <div class="daily-forecast-container">
-                    <div id="daily-forecast"></div>
-                </div>
-            </div>
+        <div id="hourly-forecast">
+            <h2 class="text-lg">3 Hour Forecast</h2>
         </div>
     </div>
-    <div id="hourly-forecast">
-        <h2 class="text-lg">3 Hour Forecast</h2>
+
+    <div id="weather-error" class="hidden text-center">
+        <i class="bi bi-exclamation-circle weather-error-icon"></i>
+        <h1>Uh oh!</h1>
+        <h2>We're having trouble finding weather data</h2>
+        <p><span class="error-message"></span></p>
     </div>
 </div>
 

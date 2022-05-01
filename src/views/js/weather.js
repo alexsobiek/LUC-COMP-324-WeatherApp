@@ -1,4 +1,8 @@
 // Selectors
+const headerContentSelector = document.getElementById("header-content");
+const weatherContainerSelector = document.getElementById("weather-container");
+const weatherErrorSelector = document.getElementById("weather-error");
+const errorMessageSelector = document.querySelectorAll(".error-message");
 const navSearch = document.getElementById("navSearch");
 const navSearchInput = document.getElementById("navSearchInput");
 const headerConditionIcon = document.getElementById("header-condition-icon");
@@ -16,10 +20,12 @@ const sunriseTimeSelectors = document.querySelectorAll(".sunrise-time");
 const sunsetTimeSelectors = document.querySelectorAll(".sunset-time");
 const dailyForecastSelector = document.getElementById("daily-forecast");
 const hourlyForecastSelector = document.getElementById("hourly-forecast");
+const unitSelector = document.querySelectorAll(".units-toggle");
 let lastZip = 60622;
 
 // Variables
 const updateGraph = new Event("updateGraph");
+let units = "imperial";
 let timeOffset = 0;
 let sunset;
 let sunrise;
@@ -44,32 +50,11 @@ function changeUnits(){
 function setUnits(unit){
     units = unit;
     // call with api with new units
-    getWeather(lastZip).catch(console.error);
+    getWeather(lastZip).catch(handleError);
 }
 
-
-// Handle nav search form
-navSearch.addEventListener("submit", event => {
-    event.preventDefault(); // Stop from refreshing page
-
-    // Sanitize form data
-    let val = navSearchInput.value;
-    val = val.trim();
-    lastZip = val;
-
-    getWeather(val).then(() => {
-        navSearchInput.value = ""; // Clear search bar
-    }).catch(error => {
-        navSearch.classList.add("search-error");
-        setTimeout(() => {
-            navSearch.classList.remove("search-error");
-        }, 300)
-        console.error(error);
-    });
-});
-
 // call so when the page first loads it shows Chicago weather
-getWeather((query !== "undefined") ? query : 60622).catch(console.error);
+getWeather((query !== "undefined") ? query : 60622).catch(handleError);
 
 function getWeather(query) {
     console.log(`Getting weather data for ${query}`);
@@ -82,11 +67,13 @@ function getWeather(query) {
             resps[1].json(),
         ]).then(json => {
             if (json[0].status === 200 && json[1].status === 200) {
+                weatherContainerSelector.classList.remove("hidden");
+                headerContentSelector.classList.remove("hidden");
+                weatherErrorSelector.classList.add("hidden");
                 displayWeather(json[0].data);
                 displayForecast(json[1].data);
-                let city = json[0].data.name;
-                window.history.pushState(city, "", encodeURI(query));
-            } else throw new Error("Failed to retrieve weather data");
+                window.history.pushState(query, "", encodeURI(query));
+            } else throw new Error(`Failed to retrieve weather data for "${query}"`);
         });
     });
 }
@@ -361,4 +348,12 @@ function isNight(date) {
 
 function clearElements(elem) {
     while (elem.firstChild) elem.removeChild(elem.firstChild);
+}
+
+function handleError(err) {
+    weatherContainerSelector.classList.add("hidden");
+    headerContentSelector.classList.add("hidden");
+    weatherErrorSelector.classList.remove("hidden");
+    errorMessageSelector.forEach(elem => elem.innerText = err);
+    console.log(err)
 }

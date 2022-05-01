@@ -5,27 +5,27 @@
     margin-bottom: 2rem;
 }
 
-.header .header-content {
+.header #header-content {
     padding: 2rem 0;
     border-top: 1px solid var(--background-accent);
     overflow: auto;
 }
 
-.header .header-content .summary-icon,
-.header .header-content .summary {
+.header #header-content .summary-icon,
+.header #header-content .summary {
     display: inline;
     float: left;
 }
 
-.header .header-content .summary-icon {
+.header #header-content .summary-icon {
     font-size: 4rem;
 }
 
-.header .header-content .summary {
+.header #header-content .summary {
     padding-left: 1rem;
 }
 
-.header .header-content .summary > * {
+.header #header-content .summary > * {
     font-weight: 300;
     line-height: 0.5rem;
 }
