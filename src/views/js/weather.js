@@ -375,5 +375,5 @@ function handleError(err) {
     headerContentSelector.classList.add("hidden");
     weatherErrorSelector.classList.remove("hidden");
     errorMessageSelector.forEach(elem => elem.innerText = err);
-    console.log(err)
+    console.error(err)
 }
